@@ -1,0 +1,5 @@
+Form1 = 35, 129, 1022, 775, C, 0, 0, 0, 0, C
+cFile = 35, 129, 1041, 775, C
+mdlPublConst = 35, 131, 482, 775, CZ
+mdlPrivConst = 35, 129, 482, 775, C
+clsPDF_Parser = 35, 129, 482, 775, CZ

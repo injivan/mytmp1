@@ -1,0 +1,6 @@
+frmLoto = 86, 45, 1116, 691, C, 0, 0, 0, 0, C
+frmSettings = 80, 26, 870, 672, C, 0, 0, 0, 0, C
+Public_Me = 35, 129, 795, 775, C
+mdlPublConst = 35, 129, 974, 775, C
+cFile = 35, 129, 862, 775, C
+clsFileDlg = 35, 130, 482, 775, C

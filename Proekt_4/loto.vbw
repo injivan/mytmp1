@@ -1,0 +1,5 @@
+frmSettings = 65, 45, 930, 691, , 0, 0, 0, 0, C
+Public_Me = 35, 129, 795, 775, 
+mdlPublConst = 35, 129, 974, 775, 
+cFile = 35, 129, 862, 775, C
+clsFileDlg = 35, 130, 482, 775, C

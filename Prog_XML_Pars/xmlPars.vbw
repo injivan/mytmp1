@@ -1,0 +1,10 @@
+frmXML_Parser = 35, 38, 730, 775, , 0, 0, 0, 0, C
+mdlPublConst = 87, 59, 863, 740, C
+clsFileDlg = 35, 129, 871, 775, C
+XMLDocument = 35, 129, 819, 775, C
+CXmlElement = 35, 129, 978, 775, C
+CXmlTag = 35, 129, 819, 775, C
+CXmlAttribute = 0, 0, 0, 0, C
+cFile = 34, 113, 1102, 759, C
+XML_Public = 35, 129, 818, 775, C
+XmlUtil = 0, 0, 0, 0, C

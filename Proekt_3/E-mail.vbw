@@ -1,0 +1,7 @@
+frmContact = 180, 126, 979, 772, , 0, 0, 0, 0, C
+cFile = 124, 129, 973, 775, C
+mdlPublConst = 124, 129, 831, 775, 
+frmSettings = 124, 129, 909, 775, C, 0, 0, 0, 0, C
+Public_Me = 52, 78, 915, 724, 
+mdlBrowseFolder = 35, 129, 1042, 775, C
+clsFileDlg = 35, 129, 482, 775, C

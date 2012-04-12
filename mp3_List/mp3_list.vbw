@@ -1,0 +1,8 @@
+frmShowList = 61, 99, 1043, 794, , 0, 0, 0, 0, C
+mdlMakeDirList = 18, 32, 983, 755, C
+cFile = 35, 129, 830, 775, C
+mdlBrowseFolder = 35, 129, 866, 775, C
+mdlPublConst = 35, 129, 894, 775, C
+frmSettings = 35, 175, 762, 671, C, 0, 0, 0, 0, C
+clsSetings = 35, 129, 686, 775, C
+clsFileDlg = 35, 129, 482, 775, C

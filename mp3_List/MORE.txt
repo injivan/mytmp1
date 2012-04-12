@@ -1,0 +1,113 @@
+трябва ми функция за връщане на всички поддиректории от зададена руут директория.
+ Примерно, руут директорията ми е с: и резултата трябва да бъдя променлива от тип string, 
+ текстов файл или нещо от тоя род (няма кой знае какво значение),
+  която променлива да съдържа пътищата с имета на всички фолдери в устройството с:
+
+
+
+
+
+
+
+
+
+
+Option Explicit
+
+
+
+Private Function pvGetAttr(PathName As String) As VbFileAttribute
+
+    On Error Resume Next
+
+    pvGetAttr = GetAttr(PathName)
+
+End Function
+
+
+
+Private Function pvDir(Optional PathName, Optional Attributes As VbFileAttribute) As String
+
+    On Error Resume Next
+
+    pvDir = Dir(PathName, Attributes)
+
+End Function
+
+
+
+Private Function GetSubFolders(sPath As String) As Collection
+
+    Dim sFile           As String
+
+    Dim lIdx            As Long
+
+  
+
+    '--- check param
+
+    If Right(sPath, 1) = "\" Then
+
+        sPath = Left(sPath, Len(sPath) - 1)
+
+    End If
+
+    '--- init local vars
+
+    Set GetSubFolders = New Collection
+
+    Do
+
+        '--- collect current path sub-folders
+
+        sFile = pvDir(sPath & "\*.*", vbDirectory Or vbHidden Or vbSystem Or vbReadOnly)
+
+        Do While Len(sFile) <> 0
+
+            If sFile <> "." And sFile <> ".." Then
+
+                If (pvGetAttr(sPath & "\" & sFile) And vbDirectory) <> 0 Then
+
+                    GetSubFolders.Add sPath & "\" & sFile
+
+                End If
+
+            End If
+
+            sFile = pvDir
+
+        Loop
+
+        '--- move to next path in breadth-first fashion
+
+        If lIdx < GetSubFolders.Count Then
+
+            lIdx = lIdx + 1
+
+            sPath = GetSubFolders.Item(lIdx)
+
+        Else
+
+            Exit Function
+
+        End If
+
+    Loop
+
+End Function
+
+
+
+Private Sub Form_Load()
+
+    Dim vElem           As Variant
+
+  
+
+    For Each vElem In GetSubFolders("D:\")
+
+        Debug.Print vElem
+
+    Next
+
+End Sub
