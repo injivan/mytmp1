@@ -31,6 +31,8 @@ Private Enum sRedData
     RD_OutDir_2 = 6     'Пътека за изходящ файл
     
     RD_OutFile = 7      'Име за изходящ файл
+    
+    RD_OutFileView = 8  'Изглед на изх файл 0-Full,1-Folders,2-Files
 End Enum
 
 
@@ -42,7 +44,9 @@ Private MePath As String 'Пътеката на ехето
 Private mvarsDirPath    As String 'Последно ползвана пътека
 Private mvarsOutDir     As String 'Пътека за изх. файл
 Private mvarsOutFile    As String 'Име на изх. файл
-Private mvarsPicFile    As String ' 'Пътека на картинката за фон
+Private mvarsPicFile    As String 'Пътека на картинката за фон
+Private mvarsFileView   As String 'Изглед на изх файл 0-Full,1-Folders,2-Files
+
 
 Private Function Set_Init_Data(ByVal a As sRedData) As Boolean
 Const nFunction = 3001
@@ -144,6 +148,11 @@ Dim k As Long
 500     'Име на изх файл
         Write_Reg_String MePath, RD_OutFile, mvarsOutFile, "Output File Name "
     
+    Case RD_OutFileView
+        'Изглед на изх файл 0-Full,1-Folders,2-Files
+        Write_Reg_String MePath, RD_OutFileView, mvarsFileView, "Output File View "
+        
+    
     Case Else
 800     Err.Raise 1000, , "Няма ключ " & a & " за " & ModulIdString
     End Select
@@ -160,6 +169,7 @@ Public Function GetInitData() As Boolean
 Const nFunction = 3000
 On Error GoTo ErH
 Dim sBuf As String
+Dim i    As Long
     'Функция за четене на основни за приложението параметри
     'Пътека за изх. файл
 100
@@ -192,8 +202,17 @@ Dim sBuf As String
 
 400 'Ime за изходящ файл
     Read_Reg_String MePath, RD_OutFile, sBuf
+    
+    i = InStr(1, sBuf, ".")
+    If i Then sBuf = Mid$(sBuf, 1, i - 1)
+    
     mvarsOutFile = Trim$(sBuf)
-    If Len(mvarsOutFile) = 0 Then mvarsOutFile = "List_Out.txt"
+    If Len(mvarsOutFile) = 0 Then mvarsOutFile = "List_Out"
+    
+500
+    'Изглед на изх файл 0-Full,1-Folders,2-Files
+    Read_Reg_String MePath, RD_OutFileView, sBuf
+    mvarsFileView = Val(Trim$(sBuf))
     
     
     GetInitData = True
@@ -206,6 +225,17 @@ Err.Clear
 
 End Function
 
+
+Public Property Let sFileView(ByVal vData As String)
+    mvarsFileView = vData
+    Set_Init_Data RD_OutFileView
+End Property
+Public Property Get sFileView() As String
+    sFileView = mvarsFileView
+End Property
+
+
+
 Public Property Let sPicFile(ByVal vData As String)
     mvarsPicFile = vData
     Set_Init_Data RD_PicFile_1
@@ -216,6 +246,11 @@ End Property
 
 
 Public Property Let sOutFile(ByVal vData As String)
+Dim i As Long
+    
+    i = InStr(1, vData, ".")
+    If i Then vData = Mid$(vData, 1, i - 1)
+    
     mvarsOutFile = vData
     Set_Init_Data RD_OutFile
 End Property

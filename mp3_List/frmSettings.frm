@@ -2,8 +2,8 @@ VERSION 5.00
 Begin VB.Form frmSettings 
    Caption         =   "Settings"
    ClientHeight    =   5820
-   ClientLeft      =   3180
-   ClientTop       =   915
+   ClientLeft      =   5250
+   ClientTop       =   3045
    ClientWidth     =   9150
    LinkTopic       =   "Form1"
    ScaleHeight     =   5820
@@ -16,6 +16,38 @@ Begin VB.Form frmSettings
       TabIndex        =   0
       Top             =   240
       Width           =   8655
+      Begin VB.Frame frmFileView 
+         Caption         =   "View"
+         Height          =   735
+         Left            =   2040
+         TabIndex        =   13
+         Top             =   3600
+         Width           =   5895
+         Begin VB.OptionButton opFiles 
+            Caption         =   "Files"
+            Height          =   255
+            Left            =   3960
+            TabIndex        =   16
+            Top             =   360
+            Width           =   1695
+         End
+         Begin VB.OptionButton opFolder 
+            Caption         =   "Foldes"
+            Height          =   255
+            Left            =   2100
+            TabIndex        =   15
+            Top             =   360
+            Width           =   1695
+         End
+         Begin VB.OptionButton opFull 
+            Caption         =   "Full"
+            Height          =   255
+            Left            =   240
+            TabIndex        =   14
+            Top             =   360
+            Width           =   1695
+         End
+      End
       Begin VB.TextBox txtOutPutName 
          Height          =   375
          Left            =   2040
@@ -224,11 +256,26 @@ On Error Resume Next
     txtOutFilePath.Text = cSets.sOutDir
     txtOutPutName.Text = cSets.sOutFile
     
+    opFiles.Value = (cSets.sFileView = 2)
+    opFull.Value = (cSets.sFileView = 0)
+    opFolder.Value = (cSets.sFileView = 1)
     
 Exit Sub
 ErH:
 ShowErrMesage Err, ModulIdString, nFunction, Erl
 Err.Clear
+End Sub
+
+Private Sub opFiles_Click()
+    If opFiles.Value Then If cSets.sFileView <> 2 Then cSets.sFileView = 2
+End Sub
+
+Private Sub opFolder_Click()
+    If opFolder.Value Then If cSets.sFileView <> 1 Then cSets.sFileView = 1
+End Sub
+
+Private Sub opFull_Click()
+    If opFull.Value Then If cSets.sFileView <> 0 Then cSets.sFileView = 0
 End Sub
 
 Private Sub txtBackImage_Validate(Cancel As Boolean)

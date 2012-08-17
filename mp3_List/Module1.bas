@@ -11,7 +11,8 @@ Option Explicit
 'nFunction = 3006 -> ShowProgressBar_CountFile
 'nFunction = 3007 -> HideProgressBar
 'nFunction = 3008 -> UpdateProgressBar_CountFile
-
+'nFunction = 3009 -> putFolderAndFile
+'nFunction = 3010 -> MakeNewFiles
 
 Private Const ModulIdString     As String = "mdlMakeDirList - "
  
@@ -58,7 +59,11 @@ Private mTime  As Double
 Private cf     As cFile
 Private cF_Poz As Long
 
+Private sFldr()     As String  '- Имена на последна дир
+Private sFiles()    As String  '- Имена на файлове
 
+Private sFldr_Co    As Long
+Private sFiles_Co   As Long
 
 
 'Purpose     :  Allows the user to select a folder
@@ -140,12 +145,19 @@ On Error Resume Next
     If Not (cf Is Nothing) Then Set cf = Nothing
     Set cf = New cFile
     
+    ReDim sFldr(10) As String
+    ReDim sFiles(50) As String
+    sFldr_Co = -1
+    sFiles_Co = -1
+    
+    
+    
     ShowProgressBar_CountFile "Folders"
     ShowProgressBar_CopyFile "Files"
     DoCancel = False
     
     
-    cf.OpenFile cSets.sOutDir & cSets.sOutFile, 1
+    cf.OpenFile cSets.sOutDir & cSets.sOutFile & ".txt", 1
     cf.SetEOF 0
     cF_Poz = 1
     'Записвам песните във файл
@@ -154,12 +166,29 @@ On Error Resume Next
     
     HideProgressBar
     
-     
+    Set cf = Nothing
+    'Запис на файл само с директории
+    'запис на файл само с песни
     
+    
+    Set cf = New cFile
+    cf.OpenFile cSets.sOutDir & cSets.sOutFile & "_1.txt", 1
+    cf.SetEOF 0
+    Call MakeNewFiles(sFldr, sFldr_Co, cf)
+    cf.CloseFile
+    Set cf = Nothing
+    
+    
+    Set cf = New cFile
+    cf.OpenFile cSets.sOutDir & cSets.sOutFile & "_2.txt", 1
+    cf.SetEOF 0
+    Call MakeNewFiles(sFiles, sFiles_Co, cf)
+    cf.CloseFile
     Set cf = Nothing
     
     HideProgressBar
     DoCancel = False
+    
 End Function
 Private Function GetNames(ByVal sFold As String, ByRef z As Long)
 Const nFunction = 3001
@@ -181,6 +210,9 @@ Dim j As Long
                 z = z + 1
 50              cf.PutData cF_Poz, 0, Right$(Space$(4) & z, 4) & ". " & sFolders(i) & vbCrLf
                 cF_Poz = cF_Poz + Len(Right$(Space$(4) & z, 4) & ". " & sFolders(i) & vbCrLf)
+                
+                If Not putFolderAndFile(z, sFolders(i)) Then GoTo ErH
+                
 60              sFolders(i) = vbNullString
             End If
         End If
@@ -464,8 +496,81 @@ On Error Resume Next
 End Function
 
  
+Private Function putFolderAndFile(ByVal lPoz As Long, ByVal sFileName As String) As Boolean
+Const nFunction = 3009
+On Error GoTo ErH
+Dim i As Long
+Dim a() As String
+10
+   
+    a = Split(Trim$(sFileName), "\")
+    i = UBound(a)
+    
+    
+    sFiles_Co = sFiles_Co + 1
+    If sFiles_Co > UBound(sFiles) Then ReDim Preserve sFiles(sFiles_Co * 2) As String
+    sFiles(sFiles_Co) = Right$(Space$(4) & lPoz, 4) & ". " & a(i)            'Име на песен
+    
+    
+    i = i - 1
+    If i >= 0 Then
+        a(i + 1) = vbNullString
+        If sFldr_Co >= 0 Then a(i + 1) = Mid$(sFldr(sFldr_Co), 7)
+        
+        If Trim$(a(i)) <> a(i + 1) Then
+            sFldr_Co = sFldr_Co + 1
+            If sFldr_Co > UBound(sFldr) Then ReDim Preserve sFldr(sFldr_Co * 2) As String
+            sFldr(sFldr_Co) = Right$(Space$(4) & lPoz, 4) & ". " & a(i)            'Име на dir
+        End If
+    End If
+    
+    
+    putFolderAndFile = True
+   
+   
+Exit Function
+ErH:
+
+If Err.Number Then
+    ShowErrMesage Err, ModulIdString, nFunction, Erl
+End If
+Err.Clear
+End Function
  
 
+
+Private Function MakeNewFiles(ByRef arrStr() As String, _
+                              ByRef arrStr_Co As Long, _
+                              ByRef cFile As cFile) As Boolean
+Const nFunction = 3010
+On Error GoTo ErH
+Dim cF_Poz  As Long
+Dim i       As Long
+10
+    'Function for Make a file form arraj
+    'arrays sFldr()     As String  '- Имена на последна дир
+    '       sFiles()    as String  '- Имена на файлове
+    
+    
+    cF_Poz = 1
+   
+    For i = 0 To arrStr_Co
+100     cFile.PutData cF_Poz, 0, arrStr(i) & vbCrLf
+200     cF_Poz = cF_Poz + Len(arrStr(i) & vbCrLf)
+    Next i
+          
+    MakeNewFiles = True
+   
+   
+Exit Function
+ErH:
+
+If Err.Number Then
+    ShowErrMesage Err, ModulIdString, nFunction, Erl
+End If
+Err.Clear
+End Function
+ 
 
 
 

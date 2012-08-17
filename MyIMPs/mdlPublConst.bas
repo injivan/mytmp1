@@ -12,7 +12,8 @@ Private Const ModulIdString   As String = "mdlPublConst - "
 
 Private Declare Function GetShortPathName Lib "kernel32" Alias "GetShortPathNameA" (ByVal lpszLongPath As String, ByVal lpszShortPath As String, ByVal cchBuffer As Long) As Long
 
-
+     
+Private sINI_Name As String
 
 Public Sub ShowErrMesage(ByVal MyError As Object, _
                          ByVal ModIDstr As String, _
@@ -228,7 +229,7 @@ Dim sBuf As String
 Dim cf   As cFile
 Dim z    As Long
 Dim h    As Long
-Dim x    As Long
+Dim X    As Long
 10
     '  1 -  3 b ASCII - Номер на параметър
     '  4 -  1 b ASCII - "."
@@ -243,7 +244,7 @@ Dim x    As Long
     'If FileExists(sTmp) Then
         Set cf = New cFile
         cf.OpenFile sTmp, 1
-        x = 0
+        X = 0
         z = FileLen(sTmp)
         h = 1
         sBuf = Space$(128)
@@ -252,7 +253,7 @@ Dim x    As Long
             If Len(sBuf) > z Then sBuf = Space$(z)
             cf.GetData h, 0, sBuf
             If Val(Left$(sBuf, 3)) = NomPrm Then Exit Do
-            If x = 0 Then If Len(Trim$(sBuf)) = 0 Then x = h 'празен ред
+            If X = 0 Then If Len(Trim$(sBuf)) = 0 Then X = h 'празен ред
             z = z - 128 - 2
             h = h + 128 + 2
         Loop
@@ -263,7 +264,7 @@ Dim x    As Long
         Mid$(sBuf, 5, 59) = Left$(sDescrStr & Space$(59), 59)
         Mid$(sBuf, 64, 1) = "="
         Mid$(sBuf, 65) = Left$(sInStr & Space$(64), 64)
-        If x Then h = x 'Записвам на празното място
+        If X Then h = X 'Записвам на празното място
         cf.PutData h, 0, sBuf & vbCrLf
     
         

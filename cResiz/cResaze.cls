@@ -43,50 +43,50 @@ Private WithEvents frmMe As Form
 Attribute frmMe.VB_VarHelpID = -1
  
 
-Public Property Let GetFlexGrid(vFlex As MSFlexGrid)
-Dim i As Long
-Dim m As Double
-    If msFlex_Co = 0 Then
-        ReDim msFlex(2) As MSFlexGrid
-        ReDim arCell(2) As tFlexCell
-        
-    End If
-    If msFlex_Co > UBound(msFlex) Then
-        ReDim Preserve msFlex(msFlex_Co + 2) As MSFlexGrid
-        ReDim Preserve arCell(msFlex_Co + 2) As tFlexCell
-    End If
-    Set msFlex(msFlex_Co) = vFlex
-    With arCell(msFlex_Co)
-        .ColCo = vFlex.Cols - 1
-        .RowCo = vFlex.Rows - 1
-        ReDim .ColWidth(.ColCo)
-        ReDim .RowHeight(.RowCo)
-        m = 0
-        For i = 0 To .ColCo
-            m = m + vFlex.ColWidth(i)
-            .ColWidth(i) = vFlex.ColWidth(i) / frmMe.ScaleWidth
-        Next i
-        If vFlex.Width - m - (.ColCo * 60) > 0 Then
-            m = (vFlex.Width - m - (.ColCo * 60)) / m
-        Else
-            m = 0
-        End If
-        
-        For i = 0 To .ColCo
-            .ColWidth(i) = (vFlex.ColWidth(i) + m * vFlex.ColWidth(i)) / frmMe.ScaleWidth
-        Next i
-        'If z - vFlex.ColWidth(i) > 0 Then vFlex.ColWidth(i) = z
-        '.ColWidth(i) = vFlex.ColWidth(i) / frmMe.ScaleWidth
-        
-        For i = 0 To .RowCo '- 1
-            .RowHeight(i) = vFlex.RowHeight(i) / frmMe.ScaleHeight
-        Next i
-    End With
-    
-    msFlex_Co = msFlex_Co + 1
-    
-    
-End Property
+'Public Property Let GetFlexGrid(vFlex As MSFlexGrid)
+'Dim i As Long
+'Dim m As Double
+'    If msFlex_Co = 0 Then
+'        ReDim msFlex(2) As MSFlexGrid
+'        ReDim arCell(2) As tFlexCell
+'
+'    End If
+'    If msFlex_Co > UBound(msFlex) Then
+'        ReDim Preserve msFlex(msFlex_Co + 2) As MSFlexGrid
+'        ReDim Preserve arCell(msFlex_Co + 2) As tFlexCell
+'    End If
+'    Set msFlex(msFlex_Co) = vFlex
+'    With arCell(msFlex_Co)
+'        .ColCo = vFlex.Cols - 1
+'        .RowCo = vFlex.Rows - 1
+'        ReDim .ColWidth(.ColCo)
+'        ReDim .RowHeight(.RowCo)
+'        m = 0
+'        For i = 0 To .ColCo
+'            m = m + vFlex.ColWidth(i)
+'            .ColWidth(i) = vFlex.ColWidth(i) / frmMe.ScaleWidth
+'        Next i
+'        If vFlex.Width - m - (.ColCo * 60) > 0 Then
+'            m = (vFlex.Width - m - (.ColCo * 60)) / m
+'        Else
+'            m = 0
+'        End If
+'
+'        For i = 0 To .ColCo
+'            .ColWidth(i) = (vFlex.ColWidth(i) + m * vFlex.ColWidth(i)) / frmMe.ScaleWidth
+'        Next i
+'        'If z - vFlex.ColWidth(i) > 0 Then vFlex.ColWidth(i) = z
+'        '.ColWidth(i) = vFlex.ColWidth(i) / frmMe.ScaleWidth
+'
+'        For i = 0 To .RowCo '- 1
+'            .RowHeight(i) = vFlex.RowHeight(i) / frmMe.ScaleHeight
+'        Next i
+'    End With
+'
+'    msFlex_Co = msFlex_Co + 1
+'
+'
+'End Property
 Public Function GetFrm(vFrm As Form, frmScaleHeight As Long, frmScaleWidth As Long)
 
     Set frmMe = vFrm

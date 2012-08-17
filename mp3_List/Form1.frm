@@ -292,7 +292,7 @@ Private Sub cmbOpenDoc_Click()
 On Error Resume Next
     If Not (cf Is Nothing) Then Set cf = Nothing
     Set cf = New cFile
-    OpenDocument cSets.sOutDir & cSets.sOutFile
+    OpenDocument cSets.sOutDir & cSets.sOutFile & GetFileType & ".txt"
     
 End Sub
 
@@ -306,7 +306,7 @@ Dim i As Long
     If Not (cf Is Nothing) Then Set cf = Nothing
     Set cf = New cFile
     
-    cf.OpenFile cSets.sOutDir & cSets.sOutFile, 1
+    cf.OpenFile cSets.sOutDir & cSets.sOutFile & GetFileType & ".txt", 1
      
     fill_arrFileInd
     
@@ -338,6 +338,12 @@ Dim i As Long
 End Sub
 
  
+Private Sub Form_Terminate()
+    Set cSets = Nothing
+End Sub
+
+ 
+
 Private Sub txtList_KeyDown(KeyCode As Integer, Shift As Integer)
     Dim i As Long
     
@@ -419,7 +425,7 @@ Private Sub DataRecuest(ByVal iStart As Long)
     Next i
     
     txtList.Text = sT
-
+    
 End Sub
 
 Private Function fill_arrFileInd() As Boolean
@@ -477,6 +483,18 @@ Err.Clear
     
 End Function
 
+
+Private Function GetFileType() As String
+    
+    Select Case cSets.sFileView
+    Case 1 'Folder
+        GetFileType = "_1"
+    Case 2 'Files
+        GetFileType = "_2"
+    Case Else 'Full
+        GetFileType = vbNullString
+    End Select
+End Function
 
 
 
