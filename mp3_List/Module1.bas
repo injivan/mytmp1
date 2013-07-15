@@ -26,7 +26,7 @@ Public DoCancel                 As Boolean
 Public DirAppl                  As String
 
 Public cSets                    As clsSetings
-Dim clsForm                     As frmShowList
+Public clsForm                  As frmShowList
 
 '!!!!!!
 Private Const ERROR_FILE_NOT_FOUND = 2&
@@ -114,11 +114,14 @@ Dim sDir    As String
     sBuf = sBuf & sFindDir
     If Right$(sBuf, 1) <> "\" Then sBuf = sBuf & "\"
 100
+    On Error Resume Next
     If flDir Then
         sDir = Dir(sBuf, vbDirectory)
     Else
         sDir = Dir(sBuf)
     End If
+    On Error GoTo ErH
+    
 150 ReDim sFiles(10) As String
     i = -1
     Do While Len(sDir)
@@ -139,8 +142,9 @@ If Err.Number Then
 End If
 Err.Clear
 End Function
-Public Function DoObr(ByVal sFold As String, ByRef z As Long)
+Public Function DoObr(ByVal sFold As String, ByRef z As Long) As Boolean
 On Error Resume Next
+ 
 
     If Not (cf Is Nothing) Then Set cf = Nothing
     Set cf = New cFile
@@ -155,7 +159,7 @@ On Error Resume Next
     ShowProgressBar_CountFile "Folders"
     ShowProgressBar_CopyFile "Files"
     DoCancel = False
-    
+    'DoEvents
     
     cf.OpenFile cSets.sOutDir & cSets.sOutFile & ".txt", 1
     cf.SetEOF 0
@@ -163,6 +167,7 @@ On Error Resume Next
     'Записвам песните във файл
     GetNames sFold, z
     'Сега от файла ги поставям в лист бокса
+    If DoCancel Then GoTo ErH
     
     HideProgressBar
     
@@ -188,9 +193,13 @@ On Error Resume Next
     
     HideProgressBar
     DoCancel = False
-    
+    DoObr = True
+Exit Function
+ErH:
+ 
+Err.Clear
 End Function
-Private Function GetNames(ByVal sFold As String, ByRef z As Long)
+Private Function GetNames(ByVal sFold As String, ByRef z As Long) As Boolean
 Const nFunction = 3001
 On Error GoTo ErH
 Dim sFolders() As String
@@ -198,7 +207,7 @@ Dim i As Long
 Dim j As Long
     
 10
-    Call dir_Folder(sFold, sFolders, j, True)
+    If Not dir_Folder(sFold, sFolders, j, True) Then GoTo ErH
 20
     For i = 0 To j
 30
@@ -221,9 +230,10 @@ Dim j As Long
         If DoCancel Then GoTo ErH
 70      UpdateProgressBar_CountFile "Folder " & i & " From " & j, i, j
         If Len(sFolders(i)) Then
-80          Call GetNames(sFolders(i), z)
+80          If Not GetNames(sFolders(i), z) Then GoTo ErH
         End If
     Next i
+    GetNames = True
 Exit Function
 ErH:
 If Err.Number Then

@@ -183,8 +183,8 @@ Private ProportionsArray()  As CtrlProportions
 Private Sub cmbExit_Click()
  
     Unload Me
-    
-    frmShowList.Show
+    clsForm.Show
+    'frmShowList.Show
     
 End Sub
 

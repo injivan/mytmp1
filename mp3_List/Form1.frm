@@ -159,6 +159,7 @@ Dim ProportionsArray()  As CtrlProportions
 Private Sub cmb_Settings_Click()
     Unload Me
     frmSettings.Show
+    
 End Sub
 
 Private Sub cmbBrows_Click()
@@ -177,6 +178,7 @@ End Sub
 
 Private Sub cmbCancel_Click()
     mdlMakeDirList.DoCancel = True
+     
 End Sub
 
 
@@ -187,13 +189,18 @@ Dim s As String
     txtList.Text = vbNullString
     s = Trim$(txtPath.Text)
     If Len(s) Then
-        Call DoObr(s, 0)
-        ShowText
+        If DoObr(s, 0) Then ShowText
     End If
     
 End Sub
 
 Private Sub cmvExit_Click()
+
+    mdlMakeDirList.DoCancel = True
+    
+    Set cSets = Nothing
+    Set clsForm = Nothing
+    
     Unload Me
 End Sub
 

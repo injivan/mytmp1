@@ -1,6 +1,6 @@
 Type=Exe
 Reference=*\G{00020430-0000-0000-C000-000000000046}#2.0#0#..\..\..\WINDOWS\SYSTEM\STDOLE2.TLB#OLE Automation
-Reference=*\G{6B263850-900B-11D0-9484-00A0C91110ED}#1.0#0#D:\WORK\TEST\TERSETUP\MSSTDFMT.DLL#Microsoft Data Formatting Object Library 6.0 (SP6)
+Reference=*\G{6B263850-900B-11D0-9484-00A0C91110ED}#1.0#0#..\..\..\WINDOWS\SYSTEM\MSSTDFMT.DLL#Microsoft Data Formatting Object Library 6.0 (SP6)
 Reference=*\G{00020905-0000-0000-C000-000000000046}#8.1#0#..\..\..\Program Files\Microsoft Office\Office\MSWORD9.OLB#Microsoft Word 9.0 Object Library
 Form=frmSettings.frm
 Module=Public_Me; Public_Me.bas

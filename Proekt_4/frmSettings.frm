@@ -249,6 +249,9 @@ Private Sub Form_Load()
 Const nFunction = 2000
 On Error Resume Next
 10
+    MePath = App.Path
+    sINI_Name = "E_Mail.ini"
+    
     Get_Init_Data
     
     With Picture1
